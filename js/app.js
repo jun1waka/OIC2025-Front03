@@ -100,6 +100,18 @@ calculations.forEach(function (button) {
         }
         if (left === null) {
             left = parseFloat(currentInput);
+        } else {
+            const right = parseFloat(currentInput);
+            const result = calculate(left, operator, right);
+
+            if (result === "Error") {
+                clearAll();
+                updateDisplay("Error");
+                return;
+            }
+
+            updateDisplay(result);
+            left = result;
         }
         operator = newOperator;
         isWaitingForSecondOperand = true;
@@ -123,9 +135,19 @@ results.forEach(function (button) {
         }
         const right = parseFloat(currentInput);
         const result = calculate(left, operator, right); 
+        if (result === "Error") {
+            clearAll();
+            updateDisplay("Error");
+            return;
+        }
 
         updateDisplay(result);
 
+        // 計算後の状態を更新
+        currentInput = result.toString();
+        left = result;
+        operator = "";
+        isWaitingForSecondOperand = true;        
         console.log('=ボタンが押されました');
     });
 });
